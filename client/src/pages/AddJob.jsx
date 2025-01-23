@@ -2,13 +2,16 @@ import axios from "axios";
 import { useContext, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProvider";
 
 const AddJob = () => {
+  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const [startDate, setStartDate] = useState(new Date());
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
     const title = form.job_title.value;
@@ -27,13 +30,21 @@ const AddJob = () => {
       min_price,
       max_price,
       description,
-      bid_count : 0,
+      bid_counts: 0,
     };
     // make a post request
-    const {data} = await axios.post(`${import.meta.env.VITE_API_URL}/add-job`, formData)
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}/add-job`, formData);
+      form.reset();
+      toast.success("Data Added Successfully");
+      navigate("/my-posted-jobs");
+    } 
+    catch (err) {
+      console.log(err);
 
-    console.log(data)
-  }
+      toast.error(err.message);
+    }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-[calc(100vh-306px)] my-12">
