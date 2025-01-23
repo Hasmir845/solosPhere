@@ -25,6 +25,21 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
+
+      const db = client.db('solo-db');
+      const jobsCollection = db.collection('jobs');
+
+      // save a jobData in db
+      
+      app.post ('/add-job', async(req, res)=>{
+        const jobData = req.body;
+        const result = await jobsCollection.insertOne(jobData)
+        res.send(result)
+        console.log(result)
+      })
+
+
+
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
@@ -32,7 +47,7 @@ async function run() {
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    // await client.close();
   }
 }
 run().catch(console.dir);
