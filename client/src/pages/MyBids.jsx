@@ -1,12 +1,14 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import BidTableRow from "../components/BidTableRow/BidTableRow";
+// import UseAxiosSecure from "../Hooks/UseAxiosSecure";
 import { AuthContext } from "../providers/AuthProvider";
 
 const MyBids = () => {
 
   const {user} = useContext(AuthContext)
   const [bids, setBids] = useState([]);
+  // const axiosSecure = UseAxiosSecure();
 
   useEffect(() => {
     fetchAllBids();
